@@ -36,9 +36,9 @@ SELECT
     LEFT(feedback_text, 80) || '...' AS feedback_preview,
     SNOWFLAKE.CORTEX.SENTIMENT(feedback_text) AS sentiment_score,
     CASE 
-        WHEN SNOWFLAKE.CORTEX.SENTIMENT(feedback_text) > 0.3 THEN '✅ POSITIVE'
-        WHEN SNOWFLAKE.CORTEX.SENTIMENT(feedback_text) < -0.3 THEN '❌ NEGATIVE'
-        ELSE '➖ NEUTRAL'
+        WHEN SNOWFLAKE.CORTEX.SENTIMENT(feedback_text) > 0.3 THEN 'POSITIVE'
+        WHEN SNOWFLAKE.CORTEX.SENTIMENT(feedback_text) < -0.3 THEN 'NEGATIVE'
+        ELSE 'NEUTRAL'
     END AS verdict,
     nps_score,
     feedback_channel
@@ -82,17 +82,36 @@ SELECT
     negative_feedback_count AS complaints,
     major_delays_experienced AS bad_experiences,
     CASE 
-        WHEN churn_risk_level = 'CRITICAL' THEN '🚨 Personal call + 50K bonus miles'
-        WHEN churn_risk_level = 'HIGH' THEN '⚠️ Targeted upgrade voucher'
-        ELSE '📧 Re-engagement campaign'
+        WHEN churn_risk_level = 'CRITICAL' THEN 'Personal call + 50K bonus miles'
+        WHEN churn_risk_level = 'HIGH' THEN 'Targeted upgrade voucher'
+        ELSE 'Re-engagement campaign'
     END AS recommended_action
 FROM SKYPULSE_AI.GOLD.DT_PASSENGER_RISK
 WHERE churn_risk_level IN ('CRITICAL', 'HIGH')
-  AND loyalty_tier IN ('DIAMOND', 'PLATINUM', 'GOLD')
 ORDER BY 
     CASE churn_risk_level WHEN 'CRITICAL' THEN 1 WHEN 'HIGH' THEN 2 ELSE 3 END,
     revenue_last_90d DESC
 LIMIT 8;
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- DEMO 3B: ML Forecasting — What delays are coming? (30 sec)
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+-- "Our forecasting model predicts delays per route for the next 7 days"
+SELECT
+    route_code,
+    forecast_date,
+    ROUND(predicted_avg_delay_min, 1) AS predicted_delay_min,
+    ROUND(delay_upper_95, 1) AS worst_case,
+    CASE 
+        WHEN predicted_avg_delay_min > 30 THEN 'HIGH RISK'
+        WHEN predicted_avg_delay_min > 15 THEN 'MODERATE'
+        ELSE 'LOW'
+    END AS risk_level
+FROM SKYPULSE_AI.ML.DELAY_FORECAST_RESULTS
+WHERE forecast_date BETWEEN CURRENT_DATE() AND DATEADD('day', 7, CURRENT_DATE())
+ORDER BY predicted_avg_delay_min DESC
+LIMIT 10;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- DEMO 4: Delay Cost Analysis — The $95M Problem (30 sec)
@@ -133,7 +152,14 @@ WHERE TAG_NAME = 'PII_CLASSIFICATION'
 ORDER BY TAG_VALUE;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- DEMO 6: The Bottom Line (15 sec)
+-- DEMO 6: AI Ops Chatbot (30 sec)
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+-- "Business users can ask questions in natural language"
+SELECT SKYPULSE_AI.GOLD.OPS_CHATBOT('What is our on-time performance and how many passengers did we serve?');
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- DEMO 7: The Bottom Line (15 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
 -- "Here's the ROI story"

@@ -31,65 +31,44 @@ A unified AI-powered data platform on Snowflake that:
 | Platform cost | ~$2.1M |
 | **ROI** | **22.6x** |
 
-## Snowflake Features Used (14)
+## Snowflake Features Used (12)
 
 | # | Feature | Use Case |
 |---|---------|----------|
-| 1 | Cortex AI (LLM) | Sentiment, summarization, response generation |
-| 2 | Cortex ML (Forecast) | Delay & demand prediction |
+| 1 | Cortex AI (LLM) | Sentiment, summarization, translation, response generation |
+| 2 | Cortex ML (Forecast) | Delay, demand & revenue prediction |
 | 3 | Cortex ML (Anomaly Detection) | Ops & fuel anomalies |
 | 4 | Cortex ML (Classification) | Churn & cancellation prediction |
-| 5 | Cortex Search | Semantic search over feedback |
-| 6 | Dynamic Tables | Real-time operational dashboards |
-| 7 | Streams & Tasks | CDC pipeline automation |
-| 8 | Snowpark Python | Feature engineering UDFs/UDTFs |
-| 9 | Time Travel | Regulatory audit compliance |
-| 10 | Data Sharing | Airport OTP collaboration |
-| 11 | Hybrid Tables | Low-latency gate management |
-| 12 | Iceberg Tables | Lakehouse interoperability |
-| 13 | Tags & Governance | PII classification & masking |
-| 14 | Alerts | Proactive operational notifications |
+| 5 | Dynamic Tables | Real-time operational dashboards (5 tables) |
+| 6 | Streams & Tasks | CDC pipeline automation (4 streams, 4 tasks) |
+| 7 | Snowpark Python | Feature engineering UDFs/UDTFs |
+| 8 | Time Travel | Regulatory audit compliance |
+| 9 | Data Sharing | Airport OTP collaboration (secure views + shares) |
+| 10 | Tags & Governance | PII classification, masking policies, row access |
+| 11 | Alerts | Proactive operational notifications (5 alerts) |
+| 12 | Multi-cluster Warehouses | Workload isolation (ingest, transform, analytics, ML) |
 
 ## Project Structure
 
 ```
 skypulse-ai/
 ├── README.md                          ← You are here
-├── RUN_ALL.sql                        ← Single script to deploy everything
+├── deploy.sh                          ← Automated deployment (SnowSQL + MFA)
+├── .env.example                       ← Connection config template
+├── Makefile                           ← Convenience commands
 ├── docs/
-│   └── ARCHITECTURE.md                ← Detailed architecture & design
+│   ├── ARCHITECTURE.md                ← Detailed architecture & design
+│   ├── SETUP_GUIDE.md                 ← Step-by-step deployment guide
+│   └── semantic_model.yaml            ← Cortex Analyst semantic model
 ├── presentation/
 │   ├── PRESENTATION_OUTLINE.md        ← Slide-by-slide talk track
 │   └── DEMO_QUICKSTART.sql            ← Live demo worksheet (5 min)
 └── sql/
-    ├── 01-setup/
-    │   └── 001_database_setup.sql     ← Database, schemas, warehouses, roles
-    ├── 02-data-model/
-    │   ├── 001_bronze_raw_tables.sql  ← Raw ingestion layer
-    │   ├── 002_silver_dimensions.sql  ← Star schema dimensions
-    │   ├── 003_silver_facts.sql       ← Transactional fact tables
-    │   ├── 004_gold_dynamic_tables.sql← Real-time materialized views
-    │   └── 005_streams_and_tasks.sql  ← CDC pipelines
-    ├── 03-sample-data/
-    │   ├── 001_load_date_dimension.sql
-    │   ├── 002_load_reference_data.sql
-    │   ├── 003_load_passengers.sql
-    │   ├── 004_load_flights_and_bookings.sql
-    │   ├── 005_load_delays_and_feedback.sql
-    │   └── 006_load_loyalty_activity.sql
-    ├── 04-features/
-    │   ├── 001_cortex_ai_sentiment.sql
-    │   ├── 002_time_travel_governance.sql
-    │   ├── 003_data_sharing.sql
-    │   ├── 004_alerts_and_notifications.sql
-    │   ├── 005_iceberg_and_hybrid_tables.sql
-    │   └── 006_snowpark_feature_engineering.sql
-    └── 05-ai-ml/
-        ├── 001_cortex_ml_forecasting.sql
-        ├── 002_cortex_ml_anomaly_detection.sql
-        ├── 003_cortex_ml_classification.sql
-        ├── 004_cortex_search_and_analyst.sql
-        └── 005_notebook_demo.sql
+    ├── 01-setup/                      ← Database, schemas, warehouses, roles
+    ├── 02-data-model/                 ← Bronze → Silver → Gold schema
+    ├── 03-sample-data/                ← Self-generating demo data
+    ├── 04-features/                   ← Cortex AI, governance, sharing, alerts
+    └── 05-ai-ml/                      ← ML models (forecast, anomaly, classification)
 ```
 
 ## Quick Start
@@ -101,12 +80,16 @@ skypulse-ai/
 
 ### Deployment (5 minutes)
 
-**Option A: Run the all-in-one script**
-```sql
--- Open RUN_ALL.sql in a Snowflake worksheet and execute
+**Option A: Automated deployment via SnowSQL (recommended)**
+```bash
+# Configure credentials
+cp .env.example .env   # Edit with your Snowflake account details
+
+# Deploy everything (one command, ~10 minutes)
+./deploy.sh
 ```
 
-**Option B: Run scripts in numbered order**
+**Option B: Run scripts in numbered order in Snowflake UI**
 ```
 01-setup → 02-data-model → 03-sample-data → 04-features → 05-ai-ml
 ```
@@ -124,7 +107,7 @@ skypulse-ai/
 
 **Dimensions:** Date, Time, Airport, Aircraft, Passenger (SCD2), Route, Weather, Delay Reason, Cabin Class
 
-**Facts:** Flight Event, Booking, Delay, Passenger Feedback, Loyalty Activity
+**Facts:** Flight Event (2,400+), Booking (2,400+), Delay (288), Passenger Feedback (301), Loyalty Activity (1,500+)
 
 **Gold Layer:** Dynamic Tables for real-time ops (flight status, passenger risk, route performance, anomalies, daily KPIs)
 
@@ -135,7 +118,7 @@ skypulse-ai/
 3. **Dynamic Tables over materialized views** — Declarative, auto-refreshing, with configurable lag
 4. **PII Tags + Masking Policies** — GDPR built-in, not bolted on
 5. **Cortex ML over external ML** — Zero infrastructure, managed models, integrated into SQL workflows
-6. **Hybrid Tables for operational lookups** — Sub-millisecond gate assignments without leaving Snowflake
+6. **Gate Assignment as standard table** — In production, this would be a Hybrid Table for sub-ms lookups (not available on trial)
 
 ## Estimated Snowflake Costs
 

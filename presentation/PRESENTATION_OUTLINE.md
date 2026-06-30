@@ -47,7 +47,7 @@
 **Talking Points:**
 - "Built entirely on Snowflake's AI Data Cloud — no external ML infrastructure"
 - "Medallion architecture: raw ingestion, conformed star schema, real-time business views"
-- "14 Snowflake features working together — not just using them for the sake of it, each solves a real operational need"
+- "12 Snowflake features working together — not just using them for the sake of it, each solves a real operational need"
 - Briefly list the layers: "Cortex AI for intelligence, Dynamic Tables for real-time, Streams & Tasks for automation, Data Sharing for collaboration"
 
 ---
@@ -62,7 +62,7 @@
 - "Star schema optimized for analytical queries — dimensions for airports, passengers, aircraft, routes; facts for flights, bookings, delays, feedback"
 - "SCD Type 2 on passengers tracks loyalty tier changes over time"
 - "PII tagged and masked for GDPR compliance — governance built in from day one, not bolted on"
-- "500 passengers, 5,000 flights, 20 routes — fully generated inside Snowflake using GENERATOR, no external data loads needed"
+- "500 passengers, 2,400 flights, 20 routes — fully generated inside Snowflake using GENERATOR, no external data loads needed"
 
 ---
 
@@ -97,13 +97,13 @@
 
 ## SLIDE 7: LIVE DEMO — Real-time Operations (60 seconds)
 
-**What to show:** Dynamic Tables + Alerts + Hybrid Tables
+**What to show:** Dynamic Tables + Alerts + Gate Management
 
 **Demo Steps:**
 1. Show `DT_FLIGHT_STATUS` dynamic table — auto-refreshing every minute
 2. Show `DT_OPS_ANOMALY` — real-time anomaly detection
 3. Show the alert definitions — "When OTP drops below 75%, ops director gets notified automatically"
-4. Show hybrid table gate assignment — "Sub-millisecond lookup for real-time systems"
+4. Show gate assignment table — "Low-latency lookup for real-time systems (Hybrid Table in production)"
 5. Mention Streams & Tasks: "Every new booking triggers automatic star schema enrichment. Every new feedback gets AI sentiment scored within 10 minutes"
 
 **Key Quote:** "This isn't a batch reporting system. It's a living, breathing operational nervous system."
@@ -112,26 +112,24 @@
 
 ## SLIDE 8: Feature Breadth (30 seconds)
 
-**Title:** "14 Snowflake features, one cohesive platform"
+**Title:** "12 Snowflake features, one cohesive platform"
 
 **Visual:** Feature grid with checkmarks
 
 | Feature | Use Case |
 |---------|----------|
-| Cortex AI (LLM) | Sentiment, summarization, response generation |
-| Cortex ML (Forecast) | Delay & demand prediction |
+| Cortex AI (LLM) | Sentiment, summarization, translation, response generation |
+| Cortex ML (Forecast) | Delay, demand & revenue prediction |
 | Cortex ML (Anomaly) | Ops & fuel anomaly detection |
 | Cortex ML (Classification) | Churn & cancellation prediction |
-| Cortex Search | Semantic feedback search |
-| Dynamic Tables | Real-time dashboards |
+| Dynamic Tables | Real-time dashboards (5 tables) |
 | Streams & Tasks | CDC pipeline automation |
 | Snowpark Python | Feature engineering UDFs |
 | Time Travel | Regulatory audit compliance |
 | Data Sharing | Airport OTP collaboration |
-| Hybrid Tables | Low-latency gate management |
-| Iceberg Tables | Lakehouse interoperability |
-| Tags & Governance | PII classification & masking |
+| Tags & Governance | PII classification, masking & row access |
 | Alerts | Proactive operational notifications |
+| Multi-cluster Warehouses | Workload isolation |
 
 ---
 
@@ -179,21 +177,19 @@
 ## DEMO RUNBOOK (Quick Reference)
 
 ### Pre-demo setup:
-1. Run all scripts in `sql/01-setup/` through `sql/03-sample-data/`
-2. Open Snowflake UI with 3 worksheets ready:
-   - Worksheet 1: Cortex AI demos (sentiment + complete)
-   - Worksheet 2: ML results (forecasting + churn)
-   - Worksheet 3: Dynamic tables + alerts
-3. Have the Notebook open in a separate tab
+1. Run `./deploy.sh` (already done — platform is live)
+2. Open Snowflake UI with `presentation/DEMO_QUICKSTART.sql` in a worksheet
+3. Ensure warehouse `SKYPULSE_ML_WH` is running (auto-resumes on first query)
 
 ### If demo breaks:
 - All queries are idempotent — safe to re-run
-- Fallback: switch to the pre-built Notebook which has cached results
 - Key queries have `LIMIT` clauses — they'll return fast even on cold warehouse
+- The Cortex AI queries (sentiment, complete) work independently of the ML models
 
 ### Judges' likely questions:
-1. **"How much would this cost to run?"** → ~$2.1M/year (4 warehouses, mostly suspended, Cortex consumption-based)
-2. **"How do you handle real-time data?"** → Streams for CDC, Dynamic Tables for refresh, Hybrid Tables for point lookups
-3. **"What about data quality?"** → Bronze layer preserves raw data, Silver applies validation, schema enforcement at ingestion
-4. **"How accurate are the ML models?"** → Cortex ML provides evaluation metrics; show SHOW_EVALUATION_METRICS() results
-5. **"Could this work for a real airline?"** → Yes, the schema matches IATA standards, delay codes are real, the data model handles SCD2 for compliance
+1. **"How much would this cost to run?"** → ~$2.1M/year (4 warehouses mostly suspended, Cortex consumption-based)
+2. **"How do you handle real-time data?"** → Streams for CDC, Dynamic Tables for materialization, Tasks for scheduling
+3. **"What about data quality?"** → Bronze preserves raw, Silver validates + conforms, schema enforcement at each layer
+4. **"How accurate are the ML models?"** → Cortex ML provides built-in evaluation metrics (SHOW_EVALUATION_METRICS). Cancellation model shows load_factor and departure_hour as top features.
+5. **"Could this work for a real airline?"** → Yes — IATA standard delay codes, industry-standard star schema, SCD2 for compliance, PII tagging for GDPR
+6. **"Why not Hybrid Tables / Iceberg?"** → Designed for them (gate assignments, lakehouse interop) but not available on trial. Production roadmap includes both.
