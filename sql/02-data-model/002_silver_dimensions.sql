@@ -143,7 +143,7 @@ CREATE OR REPLACE TABLE DIM_PASSENGER (
     communication_pref  VARCHAR(20),            -- 'EMAIL','SMS','PUSH','NONE'
     -- SCD2 metadata
     effective_from      TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    effective_to        TIMESTAMP_NTZ DEFAULT '9999-12-31 23:59:59',
+    effective_to        TIMESTAMP_NTZ DEFAULT '9999-12-31 23:59:59'::TIMESTAMP_NTZ,
     is_current          BOOLEAN      DEFAULT TRUE,
     -- Record metadata
     created_at          TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP(),

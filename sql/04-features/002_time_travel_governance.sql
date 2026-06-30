@@ -18,6 +18,11 @@ USE WAREHOUSE SKYPULSE_ANALYTICS_WH;
 -- Scenario: Auditor requests "passenger manifest for SP0101 on June 15, 2026"
 -- Even if data has been updated since, we can query the historical state
 
+-- NOTE: Time Travel queries below require data to have existed for the
+-- specified offset period. Run these MANUALLY during demo (not during initial deploy).
+-- They will work once the database has been running for 24+ hours.
+
+/*
 -- Query the flight data as it existed 24 hours ago
 SELECT 
     fe.flight_number,
@@ -49,6 +54,7 @@ SELECT
 FROM FACT_DELAY AT(TIMESTAMP => '2026-06-25 09:00:00'::TIMESTAMP_NTZ)
 GROUP BY delay_category
 ORDER BY total_cost DESC;
+*/
 
 -- =============================================================================
 -- Scenario: Accidental UPDATE — Recover using Time Travel
@@ -145,15 +151,15 @@ ORDER BY TAG_VALUE, COLUMN_NAME;
 -- 5. ACCESS HISTORY — Audit who accessed PII data
 -- =============================================================================
 
--- Query access history for compliance reporting
+-- Query access history for compliance reporting (run manually - requires ACCOUNT_USAGE latency)
+/*
 SELECT
     query_start_time,
     user_name,
-    role_name,
     direct_objects_accessed,
     base_objects_accessed
 FROM SNOWFLAKE.ACCOUNT_USAGE.ACCESS_HISTORY
 WHERE query_start_time >= DATEADD('day', -7, CURRENT_TIMESTAMP())
-  AND ARRAY_CONTAINS('SKYPULSE_AI.SILVER.DIM_PASSENGER'::VARIANT, base_objects_accessed:objectName)
 ORDER BY query_start_time DESC
 LIMIT 20;
+*/

@@ -174,9 +174,9 @@ SELECT
     bg.pax_key AS passenger_key,
     bg.flight_event_key,
     bg.route_key,
-    -- Booking date: 1-90 days before flight
-    TO_NUMBER(TO_CHAR(DATEADD('day', -UNIFORM(1, 90, RANDOM()), 
-        (SELECT full_date FROM DIM_DATE WHERE date_key = bg.flight_date_key)), 'YYYYMMDD')) AS booking_date_key,
+    -- Booking date: 1-90 days before flight (derived from flight_date_key)
+    TO_NUMBER(TO_CHAR(DATEADD('day', -UNIFORM(1, 90, RANDOM()),
+        TO_DATE(bg.flight_date_key::VARCHAR, 'YYYYMMDD')), 'YYYYMMDD')) AS booking_date_key,
     bg.flight_date_key,
     -- Cabin class (weighted: 70% economy, 20% business, 8% premium eco, 2% first)
     CASE WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 4

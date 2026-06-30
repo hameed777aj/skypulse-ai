@@ -61,10 +61,10 @@ SELECT
     fe.flight_number,
     fe.departure_delay_min,
     r.route_code
-FROM FACT_PASSENGER_FEEDBACK f
-LEFT JOIN DIM_PASSENGER p ON f.passenger_key = p.passenger_key AND p.is_current = TRUE
-LEFT JOIN FACT_FLIGHT_EVENT fe ON f.flight_event_key = fe.flight_event_key
-LEFT JOIN DIM_ROUTE r ON f.route_key = r.route_key
+FROM SKYPULSE_AI.SILVER.FACT_PASSENGER_FEEDBACK f
+LEFT JOIN SKYPULSE_AI.SILVER.DIM_PASSENGER p ON f.passenger_key = p.passenger_key AND p.is_current = TRUE
+LEFT JOIN SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe ON f.flight_event_key = fe.flight_event_key
+LEFT JOIN SKYPULSE_AI.SILVER.DIM_ROUTE r ON f.route_key = r.route_key
 WHERE f.sentiment_score < -0.5
 ORDER BY f.sentiment_score ASC;
 

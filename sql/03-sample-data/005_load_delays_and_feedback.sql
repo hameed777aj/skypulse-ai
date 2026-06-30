@@ -53,7 +53,7 @@ SELECT
     -- Total cost
     0 AS total_cost_impact,  -- Will be computed below
     CASE WHEN fe.departure_delay_min >= 60 THEN UNIFORM(0, 15, RANDOM()) ELSE 0 END AS caused_missed_connections,
-    CASE WHEN fe.departure_delay_min >= 30 THEN UNIFORM(0, fe.departure_delay_min/2, RANDOM()) ELSE 0 END AS reactionary_delay_min
+    CASE WHEN fe.departure_delay_min >= 30 THEN ROUND(fe.departure_delay_min * UNIFORM(10, 50, RANDOM()) / 100.0) ELSE 0 END AS reactionary_delay_min
 FROM FACT_FLIGHT_EVENT fe
 WHERE fe.departure_delay_min > 15
   AND fe.flight_status != 'CANCELLED';
