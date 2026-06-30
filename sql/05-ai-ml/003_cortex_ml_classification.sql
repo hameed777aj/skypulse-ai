@@ -96,16 +96,18 @@ CREATE OR REPLACE SNOWFLAKE.ML.CLASSIFICATION CHURN_PREDICTION_MODEL(
 );
 
 -- Step 3: Score current passengers
+-- First create a view without the label for prediction
+CREATE OR REPLACE VIEW V_CHURN_SCORING_DATA AS
+SELECT * EXCLUDE churn_label FROM V_CHURN_TRAINING_DATA;
+
+-- Run prediction
+CALL CHURN_PREDICTION_MODEL!PREDICT(
+    INPUT_DATA => SYSTEM$REFERENCE('VIEW', 'V_CHURN_SCORING_DATA')
+);
+
+-- Store results
 CREATE OR REPLACE TABLE CHURN_PREDICTIONS AS
-SELECT
-    t.*,
-    p.prediction AS predicted_churn,
-    p.probability:CHURNED::FLOAT AS churn_probability,
-    p.probability:ACTIVE::FLOAT AS active_probability
-FROM V_CHURN_TRAINING_DATA t
-CROSS JOIN TABLE(CHURN_PREDICTION_MODEL!PREDICT(INPUT_DATA => 
-    SELECT * EXCLUDE churn_label FROM V_CHURN_TRAINING_DATA
-)) p;
+SELECT * FROM TABLE(RESULT_SCAN(LAST_QUERY_ID()));
 
 -- Step 4: High-value at-risk passengers (retention target list)
 SELECT

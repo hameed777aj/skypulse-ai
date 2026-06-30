@@ -74,12 +74,22 @@ log() {
 }
 
 check_snowsql() {
-    if ! command -v snowsql &> /dev/null; then
+    # Check common SnowSQL locations
+    if command -v snowsql &> /dev/null; then
+        SNOWSQL_BIN="snowsql"
+    elif [ -x "/Users/hameedakumalla/Applications/SnowSQL.app/Contents/MacOS/snowsql" ]; then
+        SNOWSQL_BIN="/Users/hameedakumalla/Applications/SnowSQL.app/Contents/MacOS/snowsql"
+    elif [ -x "/Applications/SnowSQL.app/Contents/MacOS/snowsql" ]; then
+        SNOWSQL_BIN="/Applications/SnowSQL.app/Contents/MacOS/snowsql"
+    elif [ -x "${HOME}/Applications/SnowSQL.app/Contents/MacOS/snowsql" ]; then
+        SNOWSQL_BIN="${HOME}/Applications/SnowSQL.app/Contents/MacOS/snowsql"
+    else
         log ERROR "SnowSQL not found!"
         echo "  Install: brew install --cask snowflake-snowsql"
+        echo "  Or set SNOWSQL_BIN=/path/to/snowsql in .env"
         exit 1
     fi
-    log INFO "SnowSQL: $(snowsql --version 2>&1 | head -1)"
+    log INFO "SnowSQL: $(${SNOWSQL_BIN} --version 2>&1 | head -1)"
 }
 
 queue_phase() {
@@ -148,7 +158,7 @@ execute_combined() {
     echo -e "  ${YELLOW}Example: MyPassword123456 (where 123456 is your MFA code)${NC}"
     echo ""
     
-    snowsql \
+    "${SNOWSQL_BIN}" \
         -a "${ACCOUNT}" \
         -u "${USER}" \
         -r "${ROLE}" \
@@ -159,14 +169,14 @@ execute_combined() {
         -o friendly=false \
         -o log_level=CRITICAL \
         --mfa-passcode-in-password \
-        -P \
-        2>&1 | tee -a "${LOG_FILE}"
+        -P
     
+    local exit_code=$?
     echo ""
-    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+    if [ ${exit_code} -eq 0 ]; then
         log INFO "Deployment completed successfully!"
     else
-        log WARN "Deployment finished (some non-critical errors may have occurred)"
+        log WARN "Deployment finished with exit code ${exit_code}"
         log INFO "Check log: ${LOG_FILE}"
     fi
 }

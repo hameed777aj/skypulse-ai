@@ -17,7 +17,10 @@ USE WAREHOUSE SKYPULSE_ML_WH;
 
 -- Create a Cortex Search service on feedback text
 -- This enables semantic (meaning-based) search, not just keyword matching
+-- NOTE: Cortex Search Service syntax may vary by Snowflake version.
+-- Uncomment and adjust if available on your account.
 
+/*
 CREATE OR REPLACE CORTEX SEARCH SERVICE FEEDBACK_SEARCH_SERVICE
     ON (
         SELECT
@@ -42,6 +45,7 @@ CREATE OR REPLACE CORTEX SEARCH SERVICE FEEDBACK_SEARCH_SERVICE
     TARGET_LAG = '1 hour'
     WAREHOUSE = SKYPULSE_ML_WH
     COMMENT = 'Semantic search over all passenger feedback for insight discovery';
+*/
 
 -- Example semantic searches (run via Cortex Search API/UI):
 -- "passengers complaining about cold food on long-haul flights"
@@ -186,9 +190,6 @@ RETURNS VARCHAR
 LANGUAGE SQL
 AS
 $$
-DECLARE
-    report VARCHAR;
-BEGIN
     SELECT SNOWFLAKE.CORTEX.COMPLETE(
         'mistral-large2',
         'Generate a professional airline delay incident report based on this data. ' ||
@@ -213,12 +214,10 @@ BEGIN
          JOIN SKYPULSE_AI.SILVER.DIM_AIRPORT orig ON fe.origin_airport_key = orig.airport_key
          LEFT JOIN SKYPULSE_AI.SILVER.DIM_WEATHER w ON orig.iata_code = w.airport_iata
              AND DATE_TRUNC('hour', fe.scheduled_departure) = DATE_TRUNC('hour', w.observation_time)
-         WHERE fe.flight_number = :flight_number
+         WHERE fe.flight_number = flight_number
          ORDER BY d.full_date DESC
          LIMIT 1)
-    ) INTO report;
-    RETURN report;
-END;
+    )
 $$;
 
 -- Generate a report

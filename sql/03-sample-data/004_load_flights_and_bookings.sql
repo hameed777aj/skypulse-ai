@@ -70,7 +70,7 @@ flight_ops AS (
         rs.*,
         -- Assign aircraft (simplified - random from fleet)
         CASE 
-            WHEN rs.route_type IN ('LONG_HAUL','ULTRA_LONG_HAUL') THEN UNIFORM(10, 15, RANDOM())  -- Widebody keys
+            WHEN rs.route_type IN ('LONG_HAUL','ULTRA_LONG_HAUL') THEN UNIFORM(10, 16, RANDOM())  -- Widebody keys
             ELSE UNIFORM(1, 9, RANDOM())  -- Narrowbody keys
         END AS aircraft_key_gen,
         -- Simulate delays (80% on-time, 15% minor, 5% major)
@@ -221,7 +221,7 @@ SELECT
          ELSE '61+'
     END AS booking_lead_category
 FROM booking_gen bg
-WHERE bg.booking_seq <= UNIFORM(3, 8, RANDOM());
+WHERE bg.booking_seq <= 4;
 
 SELECT 'FACT_FLIGHT_EVENT loaded: ' || COUNT(*) || ' rows' FROM FACT_FLIGHT_EVENT;
 SELECT 'FACT_BOOKING loaded: ' || COUNT(*) || ' rows' FROM FACT_BOOKING;
