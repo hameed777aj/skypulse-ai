@@ -1,0 +1,380 @@
+                                                                                                        
+"LGW-PMI"  WINKLER_ALPHA=0.05            34.559                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MAE                            5.847                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  SMAPE                          1.609                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MSE                           61.836                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  WINKLER_ALPHA=0.05            23.706                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MAE                            5.034                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  COVERAGE_INTERVAL=0.95         0.5                   NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MAE                            4.042                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MAPE                      624748.802                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MSE                           42.222                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  MAPE                           0                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  COVERAGE_INTERVAL=0.95         0.944                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MDA                            0.471                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  WINKLER_ALPHA=0.05             0                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MSE                           50.298                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  WINKLER_ALPHA=0.05            54.093                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  WINKLER_ALPHA=0.05            16.749                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  MAPE                     1437500.009                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MAPE                     1362964.921                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BOM"  NULL                            NULL                NULL  {                                                                                                                                                                                                                              
+                                                                       "Errors": [                                                                                                                                                                                                                  
+                                                                         "Unsupported EVALUATION_CONFIG settings for provided training data set. This dataframe may be too small for the provided test configuration. The number of training rows must be larger than (N_SPLITS * TEST_SIZE) + GAP."
+                                                                       ]                                                                                                                                                                                                                            
+                                                                     }                                                                                                                                                                                                                              
+"MAN-JFK"  MDA                          NaN                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  COVERAGE_INTERVAL=0.95         0.778                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  MDA                            0.529                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  COVERAGE_INTERVAL=0.95         0                     NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  MSE                           16.597                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  WINKLER_ALPHA=0.05            38.564                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MAPE                       19565.488                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  MSE                           83.616                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  MDA                          NaN                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  MAE                            4.139                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  COVERAGE_INTERVAL=0.95         0.944                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MSE                           14.682                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  MAPE                      234621.559                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  MAE                            7.117                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MSE                           25.447                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  WINKLER_ALPHA=0.05            43.586                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  SMAPE                          2                     NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  MDA                            0                     NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  MSE                           26.606                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  MSE                           61.938                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  WINKLER_ALPHA=0.05            46.887                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  WINKLER_ALPHA=0.05            12.146                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  SMAPE                          2                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  WINKLER_ALPHA=0.05            10.914                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MAE                            7.41                  NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  MDA                            0.647                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  MSE                           37.489                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  COVERAGE_INTERVAL=0.95         0.944                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  SMAPE                          1.958                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  MAE                            7.87                  NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  MDA                            0.824                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  MDA                            0                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  WINKLER_ALPHA=0.05            14.588                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  SMAPE                          0.444                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MAPE                     5801955.542                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MAPE                     6071869.033                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MDA                            0.4                   NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  SMAPE                          2                     NaN  NULL                                                                                                                                                                                                                           
+122 Row(s) produced. Time Elapsed: 14.061s
+SERIES     ERROR_METRIC            METRIC_VALUE  STANDARD_DEVIATION  LOGS                                                                                                                                                                                                                           
+"MAN-JFK"  WINKLER_ALPHA=0.05            53.43                  NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  MSE                           18.222                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  MSE                         1761.263                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MAPE                           0.013                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  WINKLER_ALPHA=0.05           353.01                  NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  WINKLER_ALPHA=0.05           327.872                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MAE                           58.786                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  MAPE                           0.061                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  MDA                          NaN                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  MAPE                           0.06                  NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MAPE                           0.098                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  MAE                           13.942                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  MAPE                           0.084                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  MDA                            0.588                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  MAE                           10.974                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MAE                            3.769                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  MAPE                           0.073                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  WINKLER_ALPHA=0.05           207.341                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  MSE                          212.276                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MSE                         3130.119                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  MDA                            1                     NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  MAPE                           0.036                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  MAPE                           0.028                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MAE                           53.916                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  COVERAGE_INTERVAL=0.95         0                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  WINKLER_ALPHA=0.05           345.704                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  MAE                           32.888                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  SMAPE                          0.067                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  SMAPE                          0.08                  NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MAE                           48.202                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MDA                            0.588                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  MDA                            0.588                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  MSE                          118.16                  NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  SMAPE                          0.102                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  WINKLER_ALPHA=0.05            50.379                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  COVERAGE_INTERVAL=0.95         0.944                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  SMAPE                          0.078                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  COVERAGE_INTERVAL=0.95         0.5                   NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  SMAPE                          0.095                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  SMAPE                          0.017                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  SMAPE                          0.046                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MDA                            0.706                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  MSE                         2449.678                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  MAE                           39.826                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  WINKLER_ALPHA=0.05           211.216                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  MAE                            7.108                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  MSE                           50.519                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MSE                         3386.697                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  MSE                         2406.935                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MDA                            0.4                   NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  WINKLER_ALPHA=0.05            80.825                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  COVERAGE_INTERVAL=0.95         0.667                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MSE                         4734.754                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  SMAPE                          0.101                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  MDA                            0.765                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MAE                           49.364                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  SMAPE                          0.11                  NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  MSE                          194.384                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  MSE                         4240.352                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  SMAPE                          0.057                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  MSE                         2382.658                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  MAPE                           0.017                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  MAE                           31.919                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  COVERAGE_INTERVAL=0.95         0.889                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  MAPE                           0.107                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  MAE                            9.748                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  WINKLER_ALPHA=0.05           299.343                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  SMAPE                          0.028                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  MAE                            4.269                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  WINKLER_ALPHA=0.05           799.109                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-JFK"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  SMAPE                          0.056                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-PMI"  SMAPE                          0.105                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  MDA                            0.529                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MAPE                           0.11                  NaN  NULL                                                                                                                                                                                                                           
+"EDI-AMS"  COVERAGE_INTERVAL=0.95         0.889                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  MDA                            1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  MDA                          NaN                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  MAPE                           0.037                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  MSE                         1830.879                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  WINKLER_ALPHA=0.05            92.92                  NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  WINKLER_ALPHA=0.05           222.629                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-IST"  MAE                           34.106                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  MAE                           40.774                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  MDA                            0.588                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  MAPE                           0.076                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-JFK"  NULL                            NULL                NULL  {                                                                                                                                                                                                                              
+                                                                       "Errors": [                                                                                                                                                                                                                  
+                                                                         "Unsupported EVALUATION_CONFIG settings for provided training data set. This dataframe may be too small for the provided test configuration. The number of training rows must be larger than (N_SPLITS * TEST_SIZE) + GAP."
+                                                                       ]                                                                                                                                                                                                                            
+                                                                     }                                                                                                                                                                                                                              
+"LHR-SIN"  MDA                          NaN                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  SMAPE                          0.013                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MDA                            1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  MSE                         2004.518                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  MAE                           28.336                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-AGP"  MDA                            0.8                   NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  MAPE                           0.119                 NaN  NULL                                                                                                                                                                                                                           
+"LGW-BCN"  MDA                            0.765                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-FRA"  WINKLER_ALPHA=0.05           370.837                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  MDA                          NaN                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  MSE                           16.221                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-LAX"  NULL                            NULL                NULL  {                                                                                                                                                                                                                              
+                                                                       "Errors": [                                                                                                                                                                                                                  
+                                                                         "Unsupported EVALUATION_CONFIG settings for provided training data set. This dataframe may be too small for the provided test configuration. The number of training rows must be larger than (N_SPLITS * TEST_SIZE) + GAP."
+                                                                       ]                                                                                                                                                                                                                            
+                                                                     }                                                                                                                                                                                                                              
+"LGW-BCN"  WINKLER_ALPHA=0.05           432.473                 NaN  NULL                                                                                                                                                                                                                           
+"EDI-LHR"  COVERAGE_INTERVAL=0.95         0.944                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  MAPE                           0.057                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-DXB"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  MAPE                           0.093                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-SIN"  MAPE                           0.048                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  MAE                           14.57                  NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-BCN"  COVERAGE_INTERVAL=0.95         1                     NaN  NULL                                                                                                                                                                                                                           
+"LHR-SYD"  MSE                          120.432                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-HND"  WINKLER_ALPHA=0.05           104.601                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CDG"  SMAPE                          0.063                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-AMS"  WINKLER_ALPHA=0.05           242.588                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-BOM"  NULL                            NULL                NULL  {                                                                                                                                                                                                                              
+                                                                       "Errors": [                                                                                                                                                                                                                  
+                                                                         "Unsupported EVALUATION_CONFIG settings for provided training data set. This dataframe may be too small for the provided test configuration. The number of training rows must be larger than (N_SPLITS * TEST_SIZE) + GAP."
+                                                                       ]                                                                                                                                                                                                                            
+                                                                     }                                                                                                                                                                                                                              
+"LHR-SYD"  SMAPE                          0.038                 NaN  NULL                                                                                                                                                                                                                           
+"LHR-CPT"  WINKLER_ALPHA=0.05           149.536                 NaN  NULL                                                                                                                                                                                                                           
+"MAN-DXB"  SMAPE                          0.036                 NaN  NULL                                                                                                                                                                                                                           
+122 Row(s) produced. Time Elapsed: 2.253s
+002139 (02000): SQL compilation error:                                          
+Unknown function REVENUE_FORECAST_MODEL!SHOW_EVALUATION_METRICS.
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.701s
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.502s
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.302s
+status                                                                          
+View V_DELAY_ANOMALY_TRAINING successfully created.
+1 Row(s) produced. Time Elapsed: 1.636s
+status                                                                          
+Instance DELAY_ANOMALY_MODEL successfully created.
+1 Row(s) produced. Time Elapsed: 25.570s
+210012 (P0000): [MLUserError] All evaluation timestamps must be after the last timestamp in fitting data.
+000711 (02000): Query 01c56590-0209-ab93-002f-cdc7000ad0da has no result because it failed
+002003 (42S02): SQL compilation error:                                          
+Object 'DELAY_ANOMALY_RESULTS' does not exist or not authorized.
+status                                                                          
+View V_FUEL_ANOMALY_TRAINING successfully created.
+1 Row(s) produced. Time Elapsed: 17.382s
+status                                                                          
+Instance FUEL_ANOMALY_MODEL successfully created.
+1 Row(s) produced. Time Elapsed: 26.269s
+210012 (P0000): [MLUserError] All evaluation timestamps must be after the last timestamp in fitting data.
+000711 (02000): Query 01c56590-0209-a945-002f-cdc7000a3082 has no result because it failed
+002003 (42S02): SQL compilation error:                                          
+Object 'FUEL_ANOMALY_RESULTS' does not exist or not authorized.
+status                                                                          
+View V_REVENUE_ANOMALY_TRAINING successfully created.
+1 Row(s) produced. Time Elapsed: 16.706s
+210012 (P0000): [MLUserError] input_data is empty                               
+002139 (02000): SQL compilation error:                                          
+Unknown function REVENUE_ANOMALY_MODEL!DETECT_ANOMALIES.
+000711 (02000): Query 01c56591-0209-aa83-002f-cdc7000950ee has no result because it failed
+002003 (42S02): SQL compilation error:                                          
+Object 'REVENUE_ANOMALY_RESULTS' does not exist or not authorized.
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.GOLD.DELAY_ANOMALY_RESULTS' does not exist or not authorized.
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 15.040s
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.361s
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.353s
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.SILVER.DIM_PASSENGER' does not exist or not authorized.
+002003 (02000): Uncaught exception of type 'STATEMENT_ERROR' on line 0 at position -1 : SQL compilation error:
+View 'V_CHURN_TRAINING_DATA' does not exist or not authorized.
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.ML.V_CHURN_TRAINING_DATA' does not exist or not authorized.
+002139 (02000): SQL compilation error:                                          
+Unknown function CHURN_PREDICTION_MODEL!PREDICT.
+000711 (02000): Query 01c56591-0209-a945-002f-cdc7000a30c2 has no result because it failed
+002003 (42S02): SQL compilation error:                                          
+Object 'CHURN_PREDICTIONS' does not exist or not authorized.
+002139 (02000): SQL compilation error:                                          
+Unknown function CHURN_PREDICTION_MODEL!SHOW_EVALUATION_METRICS.
+002139 (02000): SQL compilation error:                                          
+Unknown function CHURN_PREDICTION_MODEL!SHOW_FEATURE_IMPORTANCE.
+status                                                                          
+View V_CANCELLATION_TRAINING successfully created.
+1 Row(s) produced. Time Elapsed: 4.710s
+status                                                                          
+Instance CANCELLATION_PREDICTION_MODEL successfully created.
+1 Row(s) produced. Time Elapsed: 19.355s
+RANK  FEATURE                      SCORE  FEATURE_TYPE                          
+   1  FLIGHT_EVENT_KEY    0.2947689958    user_provided
+   2  LOAD_FACTOR_PCT     0.1546391753    user_provided
+   3  DEPARTURE_HOUR      0.1401298205    user_provided
+   4  PAX_BOOKED          0.13860252      user_provided
+   5  DAY_OF_WEEK         0.0840015273    user_provided
+   6  AIRCRAFT_AGE_YEARS  0.07789232532   user_provided
+   7  WIND_SPEED          0.03245513555   user_provided
+   8  VISIBILITY          0.02252768232   user_provided
+   9  MONTH_NUMBER        0.02138220695   user_provided
+  10  DISTANCE_KM         0.01489117984   user_provided
+  11  SEAT_CAPACITY       0.008018327606  user_provided
+  12  PRECIPITATION       0.006872852234  user_provided
+  13  WEATHER_SEVERITY    0.002290950745  user_provided
+  14  SEASON              0.001527300496  user_provided
+  15  IS_WEEKEND          0               user_provided
+  16  ROUTE_TYPE          0               user_provided
+  17  IS_WIDEBODY         0               user_provided
+  18  WEATHER_CONDITION   0               user_provided
+  19  DEICING_REQUIRED    0               user_provided
+19 Row(s) produced. Time Elapsed: 5.125s
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.SILVER.DIM_PASSENGER' does not exist or not authorized.
+002003 (02000): Uncaught exception of type 'STATEMENT_ERROR' on line 0 at position -1 : SQL compilation error:
+View 'V_FEEDBACK_PRIORITY_TRAINING' does not exist or not authorized.
+002139 (02000): SQL compilation error:                                          
+Unknown function FEEDBACK_PRIORITY_MODEL!SHOW_EVALUATION_METRICS.
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 2.771s
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.399s
+status                                                                          
+Statement executed successfully.
+1 Row(s) produced. Time Elapsed: 0.317s
+status                                                                          
+Stage area SEMANTIC_MODELS successfully created.
+1 Row(s) produced. Time Elapsed: 0.735s
+status                                                                          
+View V_ANALYST_FLIGHT_OPS successfully created.
+1 Row(s) produced. Time Elapsed: 0.581s
+status                                                                          
+Function OPS_CHATBOT successfully created.
+1 Row(s) produced. Time Elapsed: 0.619s
+OPS_CHATBOT('WHAT IS OUR ON-TIME PERFORMANCE TODAY AND WHICH FLIGHTS ARE MOST DELAYED?')                                       
+ On-time performance today is 91.9% (57 out of 62 flights). The most delayed flights are not specified in the context provided.
+1 Row(s) produced. Time Elapsed: 2.968s
+OPS_CHATBOT('SHOULD WE PROACTIVELY COMMUNICATE WITH PASSENGERS ON DELAYED FLIGHTS?')                                                                                                                                                              
+ Yes, you should proactively communicate with passengers on delayed flights. There are 5 delayed flights today, affecting a portion of the 10,548 passengers. Clear communication can help manage expectations and maintain customer satisfaction.
+1 Row(s) produced. Time Elapsed: 5.290s
+OPS_CHATBOT('WHAT ARE THE MAIN CAUSES OF DELAYS THIS WEEK?')                                                                                                           
+ I cannot answer that from the context provided. The information given only includes today's operational summary and does not detail the causes of delays for the week.
+1 Row(s) produced. Time Elapsed: 2.905s
+001003 (42000): SQL compilation error:                                          
+syntax error line 32 at position 4 unexpected '<EOF>'.
+TOTAL_FLIGHTS  ON_TIME  OTP_PCT  AVG_DELAY_MIN  TOTAL_PASSENGERS  AVG_LOAD_FACTOR  TOTAL_REVENUE_GBP
+          214      196     91.6            2.8             36808             88.7            9800349
+1 Row(s) produced. Time Elapsed: 1.749s
+DELAY_CATEGORY  INCIDENTS  AVG_DELAY_MIN  TOTAL_PAX_AFFECTED  COMPENSATION_GBP  REBOOKING_GBP  HOTEL_GBP  TOTAL_COST_GBP  COST_PER_PAX
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.SILVER.DIM_PASSENGER' does not exist or not authorized.
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.SILVER.DIM_PASSENGER' does not exist or not authorized.
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.GOLD.DT_PASSENGER_RISK' does not exist or not authorized.
+ROUTE_CODE  ROUTE_TYPE       FLIGHTS  AVG_LOAD_FACTOR  AVG_DELAY  TOTAL_REVENUE  DELAY_COSTS  NET_CONTRIBUTION  DELAY_COST_PCT_REVENUE
+LGW-AGP     SHORT_HAUL            90             88.1        2.8        3894674            0           3894674                     0.0
+LGW-PMI     SHORT_HAUL            90             88          4.3        3541940            0           3541940                     0.0
+LHR-IST     MEDIUM_HAUL           62             87.4        3.0        3402699            0           3402699                     0.0
+LGW-BCN     SHORT_HAUL            93             87.4        3.9        3295548            0           3295548                     0.0
+LHR-BCN     SHORT_HAUL            93             88.3        4.4        3221425            0           3221425                     0.0
+EDI-AMS     SHORT_HAUL            93             89.3        2.5        2974359            0           2974359                     0.0
+LHR-FRA     SHORT_HAUL            93             88          1.9        2744395            0           2744395                     0.0
+EDI-LHR     DOMESTIC              93             87.7        2.2        2643198            0           2643198                     0.0
+LHR-SYD     ULTRA_LONG_HAUL        6             90.2        0.5        2535065            0           2535065                     0.0
+LHR-CDG     SHORT_HAUL            93             88.4        5.9        2415215            0           2415215                     0.0
+LHR-AMS     SHORT_HAUL            93             89.1        4.5        2402927            0           2402927                     0.0
+LHR-CPT     LONG_HAUL              7             92.6        5.9        1792715            0           1792715                     0.0
+LHR-HND     ULTRA_LONG_HAUL        5             83.8        0.0        1164646            0           1164646                     0.0
+LHR-SIN     ULTRA_LONG_HAUL        3             93.7        0.0         906424            0            906424                     0.0
+LHR-BOM     LONG_HAUL              4             87.3        4.0         808480            0            808480                     0.0
+MAN-DXB     LONG_HAUL              5             85.6        5.4         752473            0            752473                     0.0
+LHR-JFK     LONG_HAUL              4             88.8        0.0         642005            0            642005                     0.0
+LHR-DXB     LONG_HAUL              4             82.3        0.0         549968            0            549968                     0.0
+LHR-LAX     LONG_HAUL              2             89.5       12.0         438072            0            438072                     0.0
+MAN-JFK     LONG_HAUL              1             82         21.0         153916            0            153916                     0.0
+20 Row(s) produced. Time Elapsed: 2.522s
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.GOLD.DT_PASSENGER_RISK' does not exist or not authorized.
+STATUS                                                                          
+━━━━━ DEPLOYMENT VERIFICATION ━━━━━
+1 Row(s) produced. Time Elapsed: 0.440s
+002003 (42S02): SQL compilation error:                                          
+Object 'SKYPULSE_AI.SILVER.DIM_PASSENGER' does not exist or not authorized.
+STATUS                                                                          
+━━━━━ DEPLOYMENT COMPLETE ━━━━━
+1 Row(s) produced. Time Elapsed: 0.526s
+                                                                                
+[✓] Deployment completed successfully!
+
+[✓] Total time: 589 seconds
+
+━━━ Ready for demo! Open presentation/DEMO_QUICKSTART.sql in Snowflake ━━━

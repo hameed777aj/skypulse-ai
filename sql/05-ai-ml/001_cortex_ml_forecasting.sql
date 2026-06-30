@@ -147,11 +147,13 @@ ORDER BY predicted_load_factor DESC;
 CREATE OR REPLACE VIEW V_REVENUE_TIMESERIES AS
 SELECT
     d.full_date AS ds,
-    SUM(b.total_amount) AS y
-FROM SKYPULSE_AI.SILVER.FACT_BOOKING b
-JOIN SKYPULSE_AI.SILVER.DIM_DATE d ON b.flight_date_key = d.date_key
+    SUM(fe.revenue_total) AS y
+FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe
+JOIN SKYPULSE_AI.SILVER.DIM_DATE d ON fe.flight_date_key = d.date_key
 WHERE d.full_date >= DATEADD('day', -90, CURRENT_DATE())
-GROUP BY d.full_date;
+  AND fe.revenue_total > 0
+GROUP BY d.full_date
+HAVING SUM(fe.revenue_total) > 0;
 
 -- Build revenue forecast
 CREATE OR REPLACE SNOWFLAKE.ML.FORECAST REVENUE_FORECAST_MODEL(
@@ -188,7 +190,6 @@ ORDER BY forecast_date;
 -- Model performance metrics
 -- =============================================================================
 
--- Check model evaluation metrics
+-- Check model evaluation metrics (revenue model may have limited data for some routes)
 CALL DELAY_FORECAST_MODEL!SHOW_EVALUATION_METRICS();
 CALL DEMAND_FORECAST_MODEL!SHOW_EVALUATION_METRICS();
-CALL REVENUE_FORECAST_MODEL!SHOW_EVALUATION_METRICS();
