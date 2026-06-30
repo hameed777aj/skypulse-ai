@@ -61,9 +61,8 @@ SELECT
     negative_feedbacks,
     days_since_last_activity,
     -- Label: churned if inactive 60+ days
-    CASE WHEN days_since_last_activity > 60 THEN 'CHURNED' ELSE 'ACTIVE' END AS churn_label
-FROM passenger_activity
-WHERE days_since_last_activity IS NOT NULL;
+    CASE WHEN COALESCE(days_since_last_activity, 999) > 60 THEN 'CHURNED' ELSE 'ACTIVE' END AS churn_label
+FROM passenger_activity;
 
 -- Build classification model
 CREATE OR REPLACE SNOWFLAKE.ML.CLASSIFICATION CHURN_PREDICTION_MODEL(

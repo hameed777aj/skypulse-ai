@@ -161,8 +161,8 @@ LIMIT 15;
 CREATE OR REPLACE VIEW SKYPULSE_AI.GOLD.V_ALL_ANOMALIES AS
 SELECT 'DELAY' AS domain, series AS entity, ts AS detected_at,
        y AS actual_value, forecast AS expected_value, is_anomaly
-FROM DELAY_ANOMALY_RESULTS WHERE is_anomaly = TRUE
+FROM SKYPULSE_AI.ML.DELAY_ANOMALY_RESULTS WHERE is_anomaly = TRUE
 UNION ALL
 SELECT 'FUEL', series, ts, y, forecast, is_anomaly
-FROM FUEL_ANOMALY_RESULTS WHERE is_anomaly = TRUE
+FROM SKYPULSE_AI.ML.FUEL_ANOMALY_RESULTS WHERE is_anomaly = TRUE
 ORDER BY detected_at DESC;

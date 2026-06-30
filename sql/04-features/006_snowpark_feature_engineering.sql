@@ -263,7 +263,7 @@ SELECT
     fe.load_factor_pct,
     w.weather_condition,
     w.severity AS weather_severity,
-    CALCULATE_DELAY_RISK(
+    SKYPULSE_AI.ML.CALCULATE_DELAY_RISK(
         -- Historical OTP for this route (simplified)
         (SELECT COUNT(CASE WHEN f2.arrival_delay_min <= 15 THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0)
          FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT f2
@@ -278,8 +278,8 @@ SELECT
         ac.aircraft_age_years
     ) AS delay_risk_score,
     CASE 
-        WHEN CALCULATE_DELAY_RISK(85, w.severity, HOUR(fe.scheduled_departure), d.day_of_week, 'HIGH', ac.aircraft_age_years) > 70 THEN 'HIGH'
-        WHEN CALCULATE_DELAY_RISK(85, w.severity, HOUR(fe.scheduled_departure), d.day_of_week, 'HIGH', ac.aircraft_age_years) > 40 THEN 'MEDIUM'
+        WHEN SKYPULSE_AI.ML.CALCULATE_DELAY_RISK(85, w.severity, HOUR(fe.scheduled_departure), d.day_of_week, 'HIGH', ac.aircraft_age_years) > 70 THEN 'HIGH'
+        WHEN SKYPULSE_AI.ML.CALCULATE_DELAY_RISK(85, w.severity, HOUR(fe.scheduled_departure), d.day_of_week, 'HIGH', ac.aircraft_age_years) > 40 THEN 'MEDIUM'
         ELSE 'LOW'
     END AS risk_category
 FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe

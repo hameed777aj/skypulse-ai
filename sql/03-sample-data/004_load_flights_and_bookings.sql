@@ -137,8 +137,7 @@ WHERE ac.aircraft_key IS NOT NULL;
 
 
 -- =============================================================================
--- FACT_BOOKING — Generate bookings for the flights
--- Approximately 3-5 bookings per flight (aggregated passengers)
+-- FACT_BOOKING — Generate bookings from flights
 -- =============================================================================
 
 INSERT INTO FACT_BOOKING (
@@ -147,81 +146,44 @@ INSERT INTO FACT_BOOKING (
     origin_airport_key, dest_airport_key, booking_channel,
     booking_status, fare_class, fare_amount, tax_amount, total_amount,
     ancillary_revenue, has_checked_bag, has_seat_selection,
-    has_meal_preorder, has_lounge_access, is_upgrade,
-    days_before_departure, booking_lead_category
-)
-WITH booking_gen AS (
-    SELECT
-        fe.flight_event_key,
-        fe.route_key,
-        fe.flight_date_key,
-        fe.origin_airport_key,
-        fe.dest_airport_key,
-        fe.revenue_per_pax,
-        -- Generate 3-8 individual bookings per flight to represent passenger groups
-        seq4() AS booking_seq,
-        -- Random passenger assignment
-        UNIFORM(1, 500, RANDOM()) AS pax_key,
-        -- PNR generation
-        CHR(65 + UNIFORM(0, 25, RANDOM())) || CHR(65 + UNIFORM(0, 25, RANDOM())) || 
-        CHR(65 + UNIFORM(0, 25, RANDOM())) || UNIFORM(100, 999, RANDOM())::VARCHAR AS pnr
-    FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe
-    CROSS JOIN TABLE(GENERATOR(ROWCOUNT => 5))
-    WHERE fe.flight_status != 'CANCELLED'
+    days_before_departure
 )
 SELECT
-    bg.pnr AS booking_reference,
-    bg.pax_key AS passenger_key,
-    bg.flight_event_key,
-    bg.route_key,
-    -- Booking date: 1-90 days before flight (derived from flight_date_key)
-    TO_NUMBER(TO_CHAR(DATEADD('day', -UNIFORM(1, 90, RANDOM()),
-        TO_DATE(bg.flight_date_key::VARCHAR, 'YYYYMMDD')), 'YYYYMMDD')) AS booking_date_key,
-    bg.flight_date_key,
-    -- Cabin class (weighted: 70% economy, 20% business, 8% premium eco, 2% first)
+    CHR(65 + UNIFORM(0, 25, RANDOM())) || CHR(65 + UNIFORM(0, 25, RANDOM())) ||
+    CHR(65 + UNIFORM(0, 25, RANDOM())) || UNIFORM(100, 999, RANDOM())::VARCHAR AS booking_reference,
+    UNIFORM(1, 500, RANDOM()) AS passenger_key,
+    fe.flight_event_key,
+    fe.route_key,
+    fe.flight_date_key AS booking_date_key,
+    fe.flight_date_key,
     CASE WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 4
          WHEN UNIFORM(1, 100, RANDOM()) <= 90 THEN 2
          WHEN UNIFORM(1, 100, RANDOM()) <= 98 THEN 3
          ELSE 1
     END AS cabin_class_key,
-    bg.origin_airport_key,
-    bg.dest_airport_key,
-    -- Channel
+    fe.origin_airport_key,
+    fe.dest_airport_key,
     CASE WHEN UNIFORM(1, 100, RANDOM()) <= 45 THEN 'WEB'
          WHEN UNIFORM(1, 100, RANDOM()) <= 70 THEN 'MOBILE'
          WHEN UNIFORM(1, 100, RANDOM()) <= 85 THEN 'CORPORATE'
          WHEN UNIFORM(1, 100, RANDOM()) <= 95 THEN 'TRAVEL_AGENT'
          ELSE 'CALL_CENTER'
     END AS booking_channel,
-    -- Status
     CASE WHEN UNIFORM(1, 100, RANDOM()) <= 88 THEN 'FLOWN'
          WHEN UNIFORM(1, 100, RANDOM()) <= 94 THEN 'CONFIRMED'
          WHEN UNIFORM(1, 100, RANDOM()) <= 97 THEN 'CANCELLED'
          ELSE 'NO_SHOW'
     END AS booking_status,
-    -- Fare class
     CHR(65 + UNIFORM(0, 12, RANDOM())) AS fare_class,
-    -- Revenue
-    ROUND(bg.revenue_per_pax * UNIFORM(70, 150, RANDOM()) / 100.0, 2) AS fare_amount,
-    ROUND(bg.revenue_per_pax * 0.18, 2) AS tax_amount,
-    ROUND(bg.revenue_per_pax * UNIFORM(70, 150, RANDOM()) / 100.0 * 1.18, 2) AS total_amount,
+    ROUND(fe.revenue_per_pax * UNIFORM(70, 150, RANDOM()) / 100.0, 2) AS fare_amount,
+    ROUND(COALESCE(fe.revenue_per_pax, 100) * 0.18, 2) AS tax_amount,
+    ROUND(COALESCE(fe.revenue_per_pax, 100) * UNIFORM(70, 150, RANDOM()) / 100.0 * 1.18, 2) AS total_amount,
     ROUND(UNIFORM(0, 85, RANDOM()), 2) AS ancillary_revenue,
     CASE WHEN UNIFORM(1, 100, RANDOM()) <= 65 THEN TRUE ELSE FALSE END AS has_checked_bag,
     CASE WHEN UNIFORM(1, 100, RANDOM()) <= 40 THEN TRUE ELSE FALSE END AS has_seat_selection,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 15 THEN TRUE ELSE FALSE END AS has_meal_preorder,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 8 THEN TRUE ELSE FALSE END AS has_lounge_access,
-    CASE WHEN UNIFORM(1, 100, RANDOM()) <= 5 THEN TRUE ELSE FALSE END AS is_upgrade,
-    UNIFORM(1, 90, RANDOM()) AS days_before_departure,
-    CASE WHEN UNIFORM(1, 90, RANDOM()) <= 1 THEN 'SAME_DAY'
-         WHEN UNIFORM(1, 90, RANDOM()) <= 4 THEN '1-3_DAYS'
-         WHEN UNIFORM(1, 90, RANDOM()) <= 8 THEN '4-7_DAYS'
-         WHEN UNIFORM(1, 90, RANDOM()) <= 15 THEN '8-14_DAYS'
-         WHEN UNIFORM(1, 90, RANDOM()) <= 30 THEN '15-30_DAYS'
-         WHEN UNIFORM(1, 90, RANDOM()) <= 60 THEN '31-60_DAYS'
-         ELSE '61+'
-    END AS booking_lead_category
-FROM booking_gen bg
-WHERE bg.booking_seq <= 4;
+    UNIFORM(1, 90, RANDOM()) AS days_before_departure
+FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe
+WHERE fe.flight_status != 'CANCELLED';
 
 SELECT 'FACT_FLIGHT_EVENT loaded: ' || COUNT(*) || ' rows' FROM FACT_FLIGHT_EVENT;
 SELECT 'FACT_BOOKING loaded: ' || COUNT(*) || ' rows' FROM FACT_BOOKING;
