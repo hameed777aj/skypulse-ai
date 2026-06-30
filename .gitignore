@@ -1,0 +1,47 @@
+# ============================================================================
+# SkyPulse AI — Git Ignore
+# ============================================================================
+
+# Secrets & credentials (NEVER commit these)
+.env
+*.p8
+*.pem
+*_key
+credentials.*
+
+# SnowSQL config (may contain passwords)
+snowsql_config.ini
+
+# Deployment logs
+logs/
+*.log
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python (if using Snowpark locally)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+.env.local
+
+# Node (if using Streamlit)
+node_modules/
+
+# Temporary files
+*.tmp
+*.bak
+*.orig

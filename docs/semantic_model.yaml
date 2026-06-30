@@ -1,0 +1,235 @@
+# ============================================================================
+# SKYPULSE AI — Cortex Analyst Semantic Model
+# ============================================================================
+# Upload to Snowflake stage: PUT file://semantic_model.yaml @SKYPULSE_AI.ML.SEMANTIC_MODELS;
+# Used by Cortex Analyst to enable natural language queries over the data model.
+# ============================================================================
+
+name: skypulse_operations
+description: >
+  SkyPulse Airways operational analytics model covering flight operations,
+  bookings, delays, customer feedback, and loyalty program activity.
+
+tables:
+  - name: FACT_FLIGHT_EVENT
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Master flight operations fact - one row per flight leg per date
+    columns:
+      - name: FLIGHT_NUMBER
+        description: Unique flight identifier (e.g., SP0101)
+        synonyms: [flight, flight code, service number]
+      - name: FLIGHT_STATUS
+        description: Current status - SCHEDULED, DEPARTED, AIRBORNE, LANDED, CANCELLED, DIVERTED
+        synonyms: [status]
+      - name: DEPARTURE_DELAY_MIN
+        description: Minutes of departure delay (0 = on time)
+        synonyms: [delay, departure delay, late by]
+      - name: ARRIVAL_DELAY_MIN
+        description: Minutes of arrival delay
+        synonyms: [arrival delay, arrived late]
+      - name: PAX_BOOKED
+        description: Number of passengers booked on this flight
+        synonyms: [passengers, pax, travelers, booked passengers]
+      - name: PAX_FLOWN
+        description: Number of passengers who actually flew
+        synonyms: [flown passengers, actual passengers]
+      - name: SEAT_CAPACITY
+        description: Total seat capacity of the aircraft
+        synonyms: [capacity, seats, total seats]
+      - name: LOAD_FACTOR_PCT
+        description: Percentage of seats filled (pax_flown / seat_capacity * 100)
+        synonyms: [load factor, occupancy, fill rate]
+      - name: REVENUE_TOTAL
+        description: Total revenue from this flight in GBP
+        synonyms: [revenue, income, sales]
+      - name: FUEL_CONSUMED_KG
+        description: Total fuel burned in kilograms
+        synonyms: [fuel burn, fuel consumption, fuel used]
+
+  - name: FACT_BOOKING
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Booking fact - one row per passenger-segment in a PNR
+    columns:
+      - name: BOOKING_REFERENCE
+        description: PNR (Passenger Name Record) code
+        synonyms: [PNR, booking ref, reservation]
+      - name: BOOKING_CHANNEL
+        description: How the booking was made - WEB, MOBILE, CALL_CENTER, TRAVEL_AGENT, CORPORATE
+        synonyms: [channel, booked via, source]
+      - name: BOOKING_STATUS
+        description: Current booking status - CONFIRMED, CANCELLED, NO_SHOW, CHECKED_IN, BOARDED, FLOWN
+      - name: TOTAL_AMOUNT
+        description: Total booking value in GBP including taxes
+        synonyms: [price, cost, fare, ticket price]
+      - name: ANCILLARY_REVENUE
+        description: Extra revenue from bags, seats, meals, upgrades
+        synonyms: [extras, add-ons, ancillary]
+      - name: DAYS_BEFORE_DEPARTURE
+        description: How many days before departure the booking was made
+        synonyms: [advance purchase, booking lead time]
+
+  - name: FACT_DELAY
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Delay event fact with cause codes and financial impact
+    columns:
+      - name: DELAY_MINUTES
+        description: Duration of the delay in minutes
+        synonyms: [delay duration, delay length, how long delayed]
+      - name: DELAY_CATEGORY
+        description: Root cause category - WEATHER, ATC, TECHNICAL, CREW, PASSENGER, SECURITY, AIRPORT, REACTIONARY
+        synonyms: [cause, reason, delay type]
+      - name: TOTAL_COST_IMPACT
+        description: Total financial cost of the delay in GBP (compensation + rebooking + hotel + meals)
+        synonyms: [cost, delay cost, financial impact]
+      - name: PAX_AFFECTED
+        description: Number of passengers affected by this delay
+        synonyms: [affected passengers, impacted travelers]
+      - name: COMPENSATION_AMOUNT
+        description: EU261 compensation paid to passengers in GBP
+
+  - name: FACT_PASSENGER_FEEDBACK
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Customer feedback with AI-enriched sentiment analysis
+    columns:
+      - name: FEEDBACK_TEXT
+        description: Full text of the customer feedback
+        synonyms: [comment, review, complaint, feedback]
+      - name: SENTIMENT_SCORE
+        description: AI-computed sentiment from -1.0 (very negative) to 1.0 (very positive)
+        synonyms: [sentiment, mood, satisfaction score]
+      - name: NPS_SCORE
+        description: Net Promoter Score (0-10)
+        synonyms: [NPS, promoter score, recommendation score]
+      - name: OVERALL_RATING
+        description: Star rating (1-5)
+        synonyms: [rating, stars, score]
+      - name: FEEDBACK_CHANNEL
+        description: Channel - NPS_SURVEY, SOCIAL_MEDIA, IN_APP, EMAIL, CALL_CENTER
+
+  - name: DIM_PASSENGER
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Passenger dimension with loyalty program details (SCD Type 2)
+    columns:
+      - name: LOYALTY_TIER
+        description: Current loyalty tier - BRONZE, SILVER, GOLD, PLATINUM, DIAMOND
+        synonyms: [tier, membership level, status]
+      - name: LIFETIME_MILES
+        description: Total miles earned in lifetime
+      - name: HOME_AIRPORT
+        description: Passenger's home/base airport IATA code
+
+  - name: DIM_AIRPORT
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Airport reference dimension
+    columns:
+      - name: IATA_CODE
+        description: 3-letter IATA airport code (e.g., LHR, JFK)
+        synonyms: [airport code, code]
+      - name: AIRPORT_NAME
+        description: Full airport name
+        synonyms: [airport, name]
+      - name: CITY
+        description: City where the airport is located
+      - name: COUNTRY
+        description: Country where the airport is located
+      - name: HUB_TYPE
+        description: Hub classification - PRIMARY_HUB, SECONDARY_HUB, FOCUS_CITY, OUTSTATION
+
+  - name: DIM_ROUTE
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Route/city pair dimension
+    columns:
+      - name: ROUTE_CODE
+        description: Origin-Destination pair (e.g., LHR-JFK)
+        synonyms: [route, city pair, sector]
+      - name: ROUTE_TYPE
+        description: Classification - DOMESTIC, SHORT_HAUL, MEDIUM_HAUL, LONG_HAUL, ULTRA_LONG_HAUL
+        synonyms: [type, haul type]
+      - name: DISTANCE_KM
+        description: Great circle distance in kilometers
+
+  - name: DIM_DATE
+    database: SKYPULSE_AI
+    schema: SILVER
+    description: Standard date dimension
+    columns:
+      - name: FULL_DATE
+        description: Calendar date
+        synonyms: [date, day]
+      - name: DAY_NAME
+        description: Day of week name (Mon, Tue, etc.)
+      - name: MONTH_NAME
+        description: Month name
+      - name: SEASON
+        description: Season - WINTER, SPRING, SUMMER, AUTUMN
+      - name: IS_WEEKEND
+        description: Whether the date falls on a weekend
+
+# Relationships (joins)
+relationships:
+  - from: FACT_FLIGHT_EVENT.FLIGHT_DATE_KEY
+    to: DIM_DATE.DATE_KEY
+    type: many_to_one
+  - from: FACT_FLIGHT_EVENT.ORIGIN_AIRPORT_KEY
+    to: DIM_AIRPORT.AIRPORT_KEY
+    type: many_to_one
+  - from: FACT_FLIGHT_EVENT.DEST_AIRPORT_KEY
+    to: DIM_AIRPORT.AIRPORT_KEY
+    type: many_to_one
+  - from: FACT_FLIGHT_EVENT.ROUTE_KEY
+    to: DIM_ROUTE.ROUTE_KEY
+    type: many_to_one
+  - from: FACT_BOOKING.PASSENGER_KEY
+    to: DIM_PASSENGER.PASSENGER_KEY
+    type: many_to_one
+  - from: FACT_BOOKING.FLIGHT_EVENT_KEY
+    to: FACT_FLIGHT_EVENT.FLIGHT_EVENT_KEY
+    type: many_to_one
+  - from: FACT_DELAY.FLIGHT_EVENT_KEY
+    to: FACT_FLIGHT_EVENT.FLIGHT_EVENT_KEY
+    type: many_to_one
+  - from: FACT_PASSENGER_FEEDBACK.PASSENGER_KEY
+    to: DIM_PASSENGER.PASSENGER_KEY
+    type: many_to_one
+
+# Example verified queries (for Cortex Analyst to learn from)
+verified_queries:
+  - question: "What is our on-time performance this week?"
+    sql: >
+      SELECT 
+        COUNT(CASE WHEN fe.arrival_delay_min <= 15 THEN 1 END) * 100.0 / COUNT(*) AS otp_percentage
+      FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe
+      JOIN SKYPULSE_AI.SILVER.DIM_DATE d ON fe.flight_date_key = d.date_key
+      WHERE d.full_date >= DATEADD('day', -7, CURRENT_DATE())
+        AND fe.flight_status = 'LANDED'
+
+  - question: "Which routes have the most delays?"
+    sql: >
+      SELECT r.route_code, AVG(fe.arrival_delay_min) AS avg_delay, COUNT(*) AS flights
+      FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe
+      JOIN SKYPULSE_AI.SILVER.DIM_ROUTE r ON fe.route_key = r.route_key
+      GROUP BY r.route_code
+      ORDER BY avg_delay DESC
+      LIMIT 10
+
+  - question: "How much do delays cost us by category?"
+    sql: >
+      SELECT delay_category, SUM(total_cost_impact) AS total_cost, COUNT(*) AS incidents
+      FROM SKYPULSE_AI.SILVER.FACT_DELAY
+      GROUP BY delay_category
+      ORDER BY total_cost DESC
+
+  - question: "How many Diamond members gave negative feedback?"
+    sql: >
+      SELECT COUNT(DISTINCT f.passenger_key) AS unhappy_diamond_members
+      FROM SKYPULSE_AI.SILVER.FACT_PASSENGER_FEEDBACK f
+      JOIN SKYPULSE_AI.SILVER.DIM_PASSENGER p ON f.passenger_key = p.passenger_key
+      WHERE p.loyalty_tier = 'DIAMOND' AND p.is_current = TRUE
+        AND f.sentiment_label = 'NEGATIVE'
