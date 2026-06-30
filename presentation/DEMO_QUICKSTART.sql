@@ -3,28 +3,38 @@
 -- ============================================================================
 -- Run this single worksheet during the presentation for maximum impact.
 -- Each section is a self-contained "wow moment" — run them sequentially.
--- Estimated total demo time: 4-5 minutes
+-- Estimated total demo time: 5-6 minutes
 -- ============================================================================
 
--- Setup context
+-- Setup context (run this first)
+USE ROLE ACCOUNTADMIN;
 USE DATABASE SKYPULSE_AI;
+USE SCHEMA SILVER;
 USE WAREHOUSE SKYPULSE_ML_WH;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- DEMO 1: Real-time Operations Dashboard (30 sec)
+-- DEMO 1: Operations Overview (30 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
--- "Here's our operational heartbeat — refreshing every minute"
+-- "Here's our operational summary — 2,400 flights across 20 routes"
 SELECT
-    flight_number,
-    origin_iata || ' → ' || dest_iata AS route,
-    flight_status,
-    departure_delay_min,
-    delay_severity,
-    load_factor_pct || '%' AS load_factor,
-    aircraft_type
-FROM SKYPULSE_AI.GOLD.DT_FLIGHT_STATUS
-ORDER BY departure_delay_min DESC
+    fe.flight_number,
+    orig.iata_code || ' -> ' || dest.iata_code AS route,
+    fe.flight_status,
+    fe.departure_delay_min,
+    CASE
+        WHEN fe.arrival_delay_min > 180 THEN 'SEVERE'
+        WHEN fe.arrival_delay_min > 60  THEN 'SIGNIFICANT'
+        WHEN fe.arrival_delay_min > 15  THEN 'MINOR'
+        ELSE 'ON_TIME'
+    END AS delay_severity,
+    fe.load_factor_pct || '%' AS load_factor,
+    ac.aircraft_type
+FROM SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe
+JOIN SKYPULSE_AI.SILVER.DIM_AIRPORT orig ON fe.origin_airport_key = orig.airport_key
+JOIN SKYPULSE_AI.SILVER.DIM_AIRPORT dest ON fe.dest_airport_key = dest.airport_key
+JOIN SKYPULSE_AI.SILVER.DIM_AIRCRAFT ac ON fe.aircraft_key = ac.aircraft_key
+ORDER BY fe.departure_delay_min DESC
 LIMIT 10;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -47,8 +57,7 @@ WHERE feedback_text IS NOT NULL
 ORDER BY feedback_timestamp DESC
 LIMIT 5;
 
--- "Now let's generate an AI-powered response for our most upset Diamond member"
-USE SCHEMA SILVER;
+-- "Now let's generate an AI-powered response for our most upset loyalty member"
 SELECT
     p.first_name || ' ' || p.last_name AS customer,
     p.loyalty_tier,
@@ -60,44 +69,51 @@ SELECT
         ' loyalty member. Reference their specific issue and offer compensation. ' ||
         'Their complaint: ' || f.feedback_text
     ) AS ai_generated_response
-FROM FACT_PASSENGER_FEEDBACK f
-JOIN DIM_PASSENGER p ON f.passenger_key = p.passenger_key AND p.is_current = TRUE
-WHERE f.sentiment_score < -0.6
-  AND p.loyalty_tier IN ('DIAMOND', 'PLATINUM')
+FROM SKYPULSE_AI.SILVER.FACT_PASSENGER_FEEDBACK f
+JOIN SKYPULSE_AI.SILVER.DIM_PASSENGER p ON f.passenger_key = p.passenger_key AND p.is_current = TRUE
+WHERE f.sentiment_score < -0.5
+  AND p.loyalty_tier IN ('DIAMOND', 'PLATINUM', 'GOLD')
 ORDER BY f.sentiment_score ASC
 LIMIT 1;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- DEMO 3: Churn Prediction — Who's About to Leave? (45 sec)
+-- DEMO 3: Churn Risk Analysis (45 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
--- "Our ML model identifies high-value passengers at risk of churning"
+-- "Which high-value passengers are at risk of leaving?"
 SELECT
-    full_name,
-    loyalty_tier,
-    churn_risk_level,
-    days_since_last_booking || ' days inactive' AS inactivity,
-    ROUND(revenue_last_90d, 0) || ' GBP' AS recent_revenue,
-    ROUND(avg_sentiment_90d, 2) AS sentiment,
-    negative_feedback_count AS complaints,
-    major_delays_experienced AS bad_experiences,
+    p.first_name || ' ' || p.last_name AS passenger_name,
+    p.loyalty_tier,
+    p.lifetime_miles,
+    p.ytd_segments,
+    COUNT(DISTINCT b.booking_key) AS recent_bookings,
+    ROUND(COALESCE(AVG(f.sentiment_score), 0), 2) AS avg_sentiment,
+    COUNT(CASE WHEN fe.arrival_delay_min > 60 THEN 1 END) AS major_delays,
     CASE 
-        WHEN churn_risk_level = 'CRITICAL' THEN 'Personal call + 50K bonus miles'
-        WHEN churn_risk_level = 'HIGH' THEN 'Targeted upgrade voucher'
+        WHEN COUNT(DISTINCT b.booking_key) = 0 AND COALESCE(AVG(f.sentiment_score), 0) < 0 THEN 'CRITICAL'
+        WHEN COUNT(DISTINCT b.booking_key) <= 1 OR COALESCE(AVG(f.sentiment_score), 0) < -0.3 THEN 'HIGH'
+        ELSE 'MEDIUM'
+    END AS churn_risk,
+    CASE 
+        WHEN COUNT(DISTINCT b.booking_key) = 0 THEN 'Personal call + 50K bonus miles'
+        WHEN COALESCE(AVG(f.sentiment_score), 0) < -0.3 THEN 'Service recovery + upgrade voucher'
         ELSE 'Re-engagement campaign'
     END AS recommended_action
-FROM SKYPULSE_AI.GOLD.DT_PASSENGER_RISK
-WHERE churn_risk_level IN ('CRITICAL', 'HIGH')
-ORDER BY 
-    CASE churn_risk_level WHEN 'CRITICAL' THEN 1 WHEN 'HIGH' THEN 2 ELSE 3 END,
-    revenue_last_90d DESC
-LIMIT 8;
+FROM SKYPULSE_AI.SILVER.DIM_PASSENGER p
+LEFT JOIN SKYPULSE_AI.SILVER.FACT_BOOKING b ON p.passenger_key = b.passenger_key
+LEFT JOIN SKYPULSE_AI.SILVER.FACT_FLIGHT_EVENT fe ON b.flight_event_key = fe.flight_event_key
+LEFT JOIN SKYPULSE_AI.SILVER.FACT_PASSENGER_FEEDBACK f ON p.passenger_key = f.passenger_key
+WHERE p.is_current = TRUE
+  AND p.loyalty_tier IN ('DIAMOND', 'PLATINUM', 'GOLD')
+GROUP BY p.first_name, p.last_name, p.loyalty_tier, p.lifetime_miles, p.ytd_segments
+ORDER BY churn_risk, p.lifetime_miles DESC
+LIMIT 10;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- DEMO 3B: ML Forecasting — What delays are coming? (30 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
--- "Our forecasting model predicts delays per route for the next 7 days"
+-- "Our Cortex ML model predicts delays per route for the next 7 days"
 SELECT
     route_code,
     forecast_date,
@@ -109,7 +125,6 @@ SELECT
         ELSE 'LOW'
     END AS risk_level
 FROM SKYPULSE_AI.ML.DELAY_FORECAST_RESULTS
-WHERE forecast_date BETWEEN CURRENT_DATE() AND DATEADD('day', 7, CURRENT_DATE())
 ORDER BY predicted_avg_delay_min DESC
 LIMIT 10;
 
@@ -122,10 +137,10 @@ SELECT
     delay_category,
     COUNT(*) AS incidents,
     ROUND(AVG(delay_minutes), 0) || ' min' AS avg_delay,
-    TO_CHAR(SUM(pax_affected), '999,999') AS passengers_hit,
-    '£' || TO_CHAR(ROUND(SUM(total_cost_impact), 0), '999,999,999') AS total_cost,
+    SUM(pax_affected) AS passengers_hit,
+    ROUND(SUM(total_cost_impact), 0) AS total_cost_gbp,
     CASE 
-        WHEN delay_category = 'WEATHER' THEN 'Predict & proactively rebook'
+        WHEN delay_category = 'WEATHER' THEN 'Predict and proactively rebook'
         WHEN delay_category = 'REACTIONARY' THEN 'Break the delay chain'
         WHEN delay_category = 'TECHNICAL' THEN 'Predictive maintenance'
         WHEN delay_category = 'ATC' THEN 'Optimize slot management'
@@ -136,30 +151,54 @@ GROUP BY delay_category
 ORDER BY SUM(total_cost_impact) DESC;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- DEMO 5: Data Governance — PII Protection (20 sec)
+-- DEMO 5: Data Governance — PII Masking in Action (20 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
--- "Governance isn't optional for airlines — we built it in from day one"
--- Show PII tags
+-- "Governance built in from day one — PII is masked based on role"
+-- Show that masking policies are applied
 SELECT
-    TAG_NAME,
-    TAG_VALUE,
-    COLUMN_NAME
-FROM TABLE(INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS(
-    'SKYPULSE_AI.SILVER.DIM_PASSENGER', 'TABLE'
-))
-WHERE TAG_NAME = 'PII_CLASSIFICATION'
-ORDER BY TAG_VALUE;
+    passenger_id,
+    first_name,
+    last_name,
+    email,
+    phone,
+    loyalty_tier,
+    lifetime_miles
+FROM SKYPULSE_AI.SILVER.DIM_PASSENGER
+WHERE loyalty_tier = 'DIAMOND'
+  AND is_current = TRUE
+LIMIT 5;
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- DEMO 6: AI Ops Chatbot (30 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
 -- "Business users can ask questions in natural language"
-SELECT SKYPULSE_AI.GOLD.OPS_CHATBOT('What is our on-time performance and how many passengers did we serve?');
+SELECT SKYPULSE_AI.GOLD.OPS_CHATBOT('What is our on-time performance and how many passengers did we serve this week?');
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- DEMO 7: The Bottom Line (15 sec)
+-- DEMO 7: Anomaly Detection Results (20 sec)
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+-- "Our anomaly model flagged these aircraft for unusual fuel consumption"
+SELECT
+    series AS aircraft,
+    ts AS detected_date,
+    ROUND(y, 2) AS actual_fuel_efficiency,
+    ROUND(forecast, 2) AS expected,
+    ROUND((y - forecast) / NULLIF(forecast, 0) * 100, 1) AS pct_deviation,
+    CASE 
+        WHEN y > forecast * 1.15 THEN 'HIGH BURN - Check engine'
+        WHEN y < forecast * 0.85 THEN 'LOW BURN - Verify sensor'
+        ELSE 'MARGINAL'
+    END AS recommendation
+FROM SKYPULSE_AI.ML.FUEL_ANOMALY_RESULTS
+WHERE is_anomaly = TRUE
+ORDER BY ABS(y - forecast) DESC
+LIMIT 5;
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- DEMO 8: The Bottom Line (15 sec)
 -- ═══════════════════════════════════════════════════════════════════════════════
 
 -- "Here's the ROI story"
@@ -168,6 +207,6 @@ SELECT
 UNION ALL SELECT 'Churn prevention', '$6.2M'
 UNION ALL SELECT 'Sentiment-driven recovery', '$8.0M'  
 UNION ALL SELECT 'Anomaly detection', '$4.8M'
-UNION ALL SELECT '─── TOTAL BENEFIT ───', '$47.5M'
+UNION ALL SELECT '--- TOTAL BENEFIT ---', '$47.5M'
 UNION ALL SELECT 'Platform cost', '($2.1M)'
-UNION ALL SELECT '═══ NET ROI ═══', '22.6x';
+UNION ALL SELECT '=== NET ROI ===', '22.6x';
